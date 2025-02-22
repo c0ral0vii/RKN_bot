@@ -1,0 +1,16 @@
+[project]
+name = "bot"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "c0ral0vii",email = "demidovic.pavel2@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
