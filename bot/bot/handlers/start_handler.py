@@ -8,4 +8,4 @@ START_MESSAGE = "Отправьте ссылку на домен который 
 
 @router.message(CommandStart)
 async def start_handler(message: types.Message):
-    await message.answer("")
+    await message.answer(START_MESSAGE)
