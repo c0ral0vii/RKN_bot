@@ -37,7 +37,7 @@ class SiteCheckerService:
 
         img_element = self.page.locator("img#captcha_image")
         await img_element.screenshot(path="./image.jpeg")
-        # src_value = await img_element.get_attribute("src")
+
         input_captcha = self.page.locator("input#captcha")
 
         captcha_answer = await self.captcha_solver.create_request()
