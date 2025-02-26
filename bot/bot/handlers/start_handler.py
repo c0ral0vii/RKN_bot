@@ -10,5 +10,6 @@ START_MESSAGE = "Отправьте ссылку на домен который 
 
 @router.message(CommandStart())
 async def start_handler(message: types.Message):
-    await UserORM.create_user(message.from_user.id)
     await message.answer(START_MESSAGE)
+    await UserORM.create_user(message.from_user.id)
+

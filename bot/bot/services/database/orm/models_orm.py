@@ -1,11 +1,13 @@
-from typing import Optional
-
+from typing import Optional, List
+import logging
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from bot.services.database.models import Domain, User
 from bot.services.database.engine import async_session
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class UserORM:
     @staticmethod
@@ -39,28 +41,23 @@ class DomainORM:
     @staticmethod
     async def create_domain(domain: str) -> Optional[Domain]:
         async with async_session() as session:
-            try:
-                domain = Domain(
-                    domain=domain,
-                )
+            domain = Domain(
+                domain=domain,
+                banned=False,
+            )
 
-                session.add(domain)
-                await session.commit()
-                await session.refresh(domain)
+            session.add(domain)
+            await session.commit()
 
-                return domain
-            except Exception as e:
-                await session.rollback()
+            return domain
 
     @staticmethod
-    async def get_all_domain_id() -> Optional[list[str]]:
+    async def get_all_domain_id() -> List[str]:
         async with async_session() as session:
-            stmt = select(Domain)
+            stmt = select(Domain).where(Domain.banned == False)
             result = await session.execute(stmt)
             domains = result.scalars().all()
-            domains_list = [domain.domain for domain in domains]
-
-            return domains_list
+            return [domain.domain for domain in domains] if domains else []
 
     @staticmethod
     async def banned_domain(domain: str) -> Optional[Domain]:
@@ -75,4 +72,3 @@ class DomainORM:
             domain.banned = True
             session.add(domain)
             await session.commit()
-            await session.refresh(domain)

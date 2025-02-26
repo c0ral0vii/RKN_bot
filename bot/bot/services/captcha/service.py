@@ -18,7 +18,7 @@ class CaptchaService:
     async def create_request(self):
         async with aiohttp.ClientSession() as session:
             with open(
-                "/home/c0ral0vii/Projects/RKNBot/bot/bot/services/site_checker/image.jpeg",
+                "./image.jpeg",
                 "rb",
             ) as file:
                 file_content = file.read()

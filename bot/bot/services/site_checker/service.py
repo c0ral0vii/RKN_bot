@@ -6,16 +6,13 @@ from bot.services.captcha.service import CaptchaService
 from bot.services.database.orm.models_orm import UserORM, DomainORM
 
 class SenderModule:
-    def __init__(self, bot: Bot = Bot):
-        self.bot = bot
-
-    async def answer_to_all_users(self, domain):
+    async def answer_to_all_users(self, domain, bot: Bot):
         """Отправка уведомления о бане домена"""
 
         users = await UserORM.get_all_user_id()
 
         for user in users:
-            await self.bot.send_message(chat_id=user, text="Домен был забанен")
+            await bot.send_message(chat_id=user, text=f"Домен был забанен - {domain}")
 
         await DomainORM.banned_domain(domain)
 
@@ -42,7 +39,7 @@ class SiteCheckerService:
         if self.playwright:
             await self.playwright.stop()
 
-    async def check_site(self, domain: str):
+    async def check_site(self, domain: str, bot: Bot):
         """Проверка домена на нахождение его в реестре"""
 
         if not self.page:
@@ -59,21 +56,19 @@ class SiteCheckerService:
 
         captcha_answer = await self.captcha_solver.create_request()
         await input_captcha.fill(captcha_answer)
-
+        print(captcha_answer)
         button = self.page.locator("#send_but2")
         await expect(button).to_be_visible()
 
         await button.click()
-
-        site_check = self.page.locator("a.anchor")
-        print(site_check)
-        if site_check:
-            await self.answer_model.answer_to_all_users(domain)
-
         await asyncio.sleep(2)
 
+        if await self.page.locator(".TblGrid").is_visible():
+            await self.answer_model.answer_to_all_users(domain, bot)
+        await asyncio.sleep(1)
 
-async def main():
+
+async def main(bot):
     site_checker = SiteCheckerService()
 
     try:
@@ -85,12 +80,8 @@ async def main():
 
         for ip in ip_addresses:
             print(f"Проверка IP: {ip}")
-            await site_checker.check_site(ip)
+            await site_checker.check_site(ip, bot)
 
     finally:
         # Закрываем браузер после завершения
         await site_checker.close_browser()
-
-
-# Запуск асинхронного цикла
-asyncio.run(main())

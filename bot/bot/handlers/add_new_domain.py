@@ -17,9 +17,6 @@ async def add_new_domain(message: types.Message):
 
 @router.callback_query(F.data.startswith("add_"))
 async def add_new_domain_callback(query: types.CallbackQuery):
-    try:
-        await DomainORM.create_domain(query.data.split("_")[-1])
-        await query.message.delete()
-        await query.message.answer("Домен успешно добавлен")
-    except:
-        await query.message.answer("Произошла ошибка, попробуйте снова отправить ваш домен")
+    await DomainORM.create_domain(query.data.replace("add_", ""))
+    await query.message.delete()
+    await query.message.answer("Домен успешно добавлен")
