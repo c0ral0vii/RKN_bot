@@ -17,8 +17,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - BOT_API=7573248958:AAGzvYjmjPiOxkgFfx7wlB3nPWHsyBQusWw
+      - BOT_API=7573248958:AAGzvYjmjPiOxkgFfx7wlB3nPWHsyBQusWw # insert in deploy
       - DB_BOT_LINK=postgresql+asyncpg://root:root@db:5432/checker_db
-      - API_UID=149e24e4-4e9a-46a1-b60e-71cdf33634c3
+      - API_UID=149e24e4-4e9a-46a1-b60e-71cdf33634c3 # insert in deploy
       - DEBUG=False
 

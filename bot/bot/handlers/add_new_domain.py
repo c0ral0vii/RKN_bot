@@ -1,7 +1,7 @@
 from aiogram import Router, F, types
 from aiogram.types import InlineKeyboardButton
 
-from services.database.orm.models_orm import DomainORM, UserORM
+from bot.services.database.orm.models_orm import DomainORM, UserORM
 
 router = Router()
 
@@ -18,7 +18,7 @@ async def add_new_domain(message: types.Message):
 @router.callback_query(F.data.startswith("add_"))
 async def add_new_domain_callback(query: types.CallbackQuery):
     try:
-        await DomainORM.create_domain(query.data)
+        await DomainORM.create_domain(query.data.split("_")[-1])
         await query.message.delete()
         await query.message.answer("Домен успешно добавлен")
     except:

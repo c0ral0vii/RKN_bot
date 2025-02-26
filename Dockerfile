@@ -8,6 +8,9 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --no-root
 
+
+RUN poetry run playwright install
+
 COPY bot ./bot
 
 # Команда для запуска приложения
