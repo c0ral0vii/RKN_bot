@@ -8,8 +8,8 @@ COPY pyproject.toml poetry.lock ./
 
 RUN poetry install --no-root
 
-
-RUN poetry run playwright install
+RUN poetry run playwright install-deps
+RUN poetry run playwright install firefox
 
 COPY bot ./bot
 
