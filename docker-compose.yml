@@ -1,11 +1,24 @@
 services:
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: checker_db
+
+
   bot:
-    build: ./bot
+    build: .
     restart: on-failure
     ports:
       - "8000:8000"
     environment:
-      - BOT_API=123
-      - DB_BOT_LINK=123
+      - BOT_API=7573248958:AAGzvYjmjPiOxkgFfx7wlB3nPWHsyBQusWw
+      - DB_BOT_LINK=postgresql+asyncpg://root:root@db:5432/checker_db
       - API_UID=149e24e4-4e9a-46a1-b60e-71cdf33634c3
       - DEBUG=False
+

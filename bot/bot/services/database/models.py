@@ -13,12 +13,24 @@ from sqlalchemy import (
     Table,
     Date,
     select,
-    DECIMAL,
+    DECIMAL, Column,
 )
 
 
 class Base(DeclarativeBase):
-    created: Mapped[DateTime] = mapped_column(DateTime, default=func.now())
-    updated: Mapped[DateTime] = mapped_column(
-        DateTime, default=func.now(), onupdate=func.now()
-    )
+    ...
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(BigInteger)
+    send: Mapped[bool] = mapped_column(default=True)
+
+
+class Domain(Base):
+    __tablename__ = "domains"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    domain: Mapped[str] = mapped_column()
+    banned: Mapped[bool] = mapped_column(default=False)

@@ -55,7 +55,7 @@ class CaptchaService:
         request = await session.post(self.url_result, headers=self.header, json=data)
         request.raise_for_status()
         request = await request.json()
-        print(request)
+
 
         if request["status"] == 1:
             return request["request"]
