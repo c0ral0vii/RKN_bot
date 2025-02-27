@@ -19,10 +19,11 @@ class UserORM:
                 )
                 session.add(user)
                 await session.commit()
-                await session.refresh(user)
 
                 return user
             except IntegrityError:
+                await session.rollback()
+            except Exception:
                 await session.rollback()
 
     @staticmethod
@@ -57,7 +58,7 @@ class DomainORM:
             stmt = select(Domain).where(Domain.banned == False)
             result = await session.execute(stmt)
             domains = result.scalars().all()
-            return [domain.domain for domain in domains] if domains else []
+            return [domain for domain in domains] if domains else []
 
     @staticmethod
     async def banned_domain(domain: str) -> Optional[Domain]:
