@@ -13,11 +13,12 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.DEBUG)
 
 # Создаем форматтер
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 console_handler.setFormatter(formatter)
 
 # Добавляем обработчик к логгеру
 logger.addHandler(console_handler)
+
 
 class SenderModule:
     async def answer_to_all_users(self, domain, bot: Bot):
@@ -28,10 +29,14 @@ class SenderModule:
             await DomainORM.banned_domain(domain)
 
             for user in users:
-                await bot.send_message(chat_id=user, text=f"Домен был забанен - {domain}")
+                await bot.send_message(
+                    chat_id=user, text=f"Домен был забанен - {domain}"
+                )
         except Exception as e:
             for user in users:
-                await bot.send_message(chat_id=user, text=f"Домен не удалось заблокировать - {e}")
+                await bot.send_message(
+                    chat_id=user, text=f"Домен не удалось заблокировать - {e}"
+                )
 
 
 class SiteCheckerService:

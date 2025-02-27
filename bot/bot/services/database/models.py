@@ -13,12 +13,13 @@ from sqlalchemy import (
     Table,
     Date,
     select,
-    DECIMAL, Column,
+    DECIMAL,
+    Column,
 )
 
 
-class Base(DeclarativeBase):
-    ...
+class Base(DeclarativeBase): ...
+
 
 class User(Base):
     __tablename__ = "users"

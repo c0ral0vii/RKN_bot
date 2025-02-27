@@ -9,8 +9,19 @@ router = Router()
 @router.message(F.text)
 async def add_new_domain(message: types.Message):
     try:
-        await message.answer(f"Вы уверены в добавлении домена - {message.text} \n Если вы ввели домен не правильно просто не нажимайте кнопку снизу!",
-                             reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="Подтвердить вставку", callback_data=f"add_{message.text}")]]))
+        await message.answer(
+            f"Вы уверены в добавлении домена - {message.text} \n Если вы ввели домен не правильно просто не нажимайте кнопку снизу!",
+            reply_markup=types.InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text="Подтвердить вставку",
+                            callback_data=f"add_{message.text}",
+                        )
+                    ]
+                ]
+            ),
+        )
     except Exception as e:
         await message.answer("Произошла ошибка, попробуйте снова отправить ваш домен")
 

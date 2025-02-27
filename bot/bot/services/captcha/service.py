@@ -56,7 +56,6 @@ class CaptchaService:
         request.raise_for_status()
         request = await request.json()
 
-
         if request["status"] == 1:
             return request["request"]
         if request["status"] == 0 and request["request"] != "CAPCHA_NOT_READY":

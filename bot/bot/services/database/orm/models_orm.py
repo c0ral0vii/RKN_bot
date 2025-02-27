@@ -9,6 +9,7 @@ from bot.services.database.engine import async_session
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 class UserORM:
     @staticmethod
     async def create_user(user: int) -> Optional[User]:
@@ -61,15 +62,18 @@ class DomainORM:
             return [domain for domain in domains] if domains else []
 
     @staticmethod
-    async def banned_domain(domain: str) -> Optional[Domain]:
+    async def banned_domain(domain: str) -> None:
+        if not domain:
+            return None
+
         async with async_session() as session:
             stmt = select(Domain).where(Domain.domain == domain)
             result = await session.execute(stmt)
-            domain = result.scalars().first()
+            domains = result.scalars().all()
 
-            if not domain:
-                return
+            if not domains:
+                return None
 
-            domain.banned = True
-            session.add(domain)
+            for domain_obj in domains:
+                domain_obj.banned = True
             await session.commit()

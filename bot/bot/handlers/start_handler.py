@@ -12,4 +12,3 @@ START_MESSAGE = "Отправьте ссылку на домен который 
 async def start_handler(message: types.Message):
     await message.answer(START_MESSAGE)
     await UserORM.create_user(message.from_user.id)
-
